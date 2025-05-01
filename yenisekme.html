@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geçmiş Sayfası</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .history-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .history-item {
+      background-color: #fff;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .history-item a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    .history-item a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tarayıcı Geçmişi</h1>
+  <ul id="history-list" class="history-list"></ul>
+
+  <script>
+    // Geçmiş verilerini almak için localStorage'ı kullanıyoruz
+    function loadHistory() {
+      // Eğer geçmiş verisi yoksa boş bir dizi oluştur
+      let history = JSON.parse(localStorage.getItem('history')) || [];
+
+      const historyList = document.getElementById('history-list');
+      historyList.innerHTML = '';  // Önceki verileri temizle
+
+      // Geçmişi listeye ekle
+      history.forEach(url => {
+        const li = document.createElement('li');
+        li.className = 'history-item';
+        li.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+        historyList.appendChild(li);
+      });
+    }
+
+    // Geçmişi kaydetmek için bir fonksiyon
+    function saveToHistory(url) {
+      let history = JSON.parse(localStorage.getItem('history')) || [];
+      
+      // Eğer URL geçmişte yoksa ekle
+      if (!history.includes(url)) {
+        history.push(url);
+        localStorage.setItem('history', JSON.stringify(history)); // Geçmişi kaydet
+      }
+    }
+
+    // Geçerli sayfa URL'sini geçmişe kaydet
+    saveToHistory(window.location.href);
+
+    // Geçmişi yükle
+    loadHistory();
+  </script>
+</body>
+</html>
